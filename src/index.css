@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap');
+
+:root {
+  --navy:      #0D1B2A;
+  --white:     #FFFFFF;
+  --black:     #0A0A0A;
+  --off-white: #F4F6F8;
+  --gray:      #6B7A8D;
+  --border:    #D1D8E0;
+  --pass:      #065F46;
+  --pass-bg:   #D1FAE5;
+  --fail:      #991B1B;
+  --fail-bg:   #FEE2E2;
+  --font:      'DM Sans', sans-serif;
+  --mono:      'DM Mono', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--black);
+  background: var(--off-white);
+}
