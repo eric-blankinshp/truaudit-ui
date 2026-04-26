@@ -1,6 +1,15 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { getUser, logout } from '../auth'
 
 function Navbar() {
+  const navigate = useNavigate()
+  const user = getUser()
+
+  function handleLogout() {
+    logout()
+    navigate('/')
+  }
+
   return (
     <nav style={{
       background: 'var(--navy)',
@@ -70,6 +79,28 @@ function Navbar() {
       })}>
         Recommendations
       </NavLink>
+
+      <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>
+          {user?.name}
+        </span>
+        <button
+          onClick={handleLogout}
+          style={{
+            fontFamily: 'var(--font)',
+            fontSize: '13px',
+            fontWeight: '500',
+            padding: '5px 12px',
+            borderRadius: '6px',
+            border: '1px solid rgba(255,255,255,0.3)',
+            background: 'transparent',
+            color: 'var(--white)',
+            cursor: 'pointer',
+          }}
+        >
+          Logout
+        </button>
+      </div>
     </nav>
   )
 }

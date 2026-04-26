@@ -1,17 +1,48 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (!email || !password) {
       setError('Please fill in all fields.')
       return
     }
+
+    setLoading(true)
     setError('')
-    console.log('logging in with', email, password)
+
+    try {
+      const response = await fetch('http://localhost:8080/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setError(data.error || 'Login failed.')
+        return
+      }
+
+      // Store token and user info
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('user', JSON.stringify(data.user))
+
+      // Redirect to dashboard
+      navigate('/dashboard')
+
+    } catch (err) {
+      setError('Could not connect to server.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -29,7 +60,6 @@ function Login() {
         width: '100%',
         maxWidth: '400px',
       }}>
-
         <div style={{
           fontSize: '24px',
           fontWeight: '600',
@@ -48,11 +78,8 @@ function Login() {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-
           <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-            <label style={{ fontSize: '13px', fontWeight: '500' }}>
-              Email
-            </label>
+            <label style={{ fontSize: '13px', fontWeight: '500' }}>Email</label>
             <input
               type="email"
               value={email}
@@ -71,9 +98,7 @@ function Login() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-            <label style={{ fontSize: '13px', fontWeight: '500' }}>
-              Password
-            </label>
+            <label style={{ fontSize: '13px', fontWeight: '500' }}>Password</label>
             <input
               type="password"
               value={password}
@@ -99,6 +124,7 @@ function Login() {
 
           <button
             onClick={handleSubmit}
+            disabled={loading}
             style={{
               fontFamily: 'var(--font)',
               fontSize: '14px',
@@ -108,14 +134,14 @@ function Login() {
               border: 'none',
               background: 'var(--navy)',
               color: 'var(--white)',
-              cursor: 'pointer',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              opacity: loading ? 0.7 : 1,
               width: '100%',
               marginTop: '8px',
             }}
           >
-            Sign in
+            {loading ? 'Signing in...' : 'Sign in'}
           </button>
-
         </div>
       </div>
     </div>
