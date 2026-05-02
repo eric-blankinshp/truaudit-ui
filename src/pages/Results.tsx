@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getToken, getUser } from '../auth'
+import API_URL from '../api'
 
 interface Audit {
   audit_id: number
@@ -24,7 +25,7 @@ function Results() {
 
   async function fetchAudits() {
     setLoading(true)
-    let url = 'http://localhost:8080/audits?'
+    let url = `${API_URL}/audits?`
     if (departmentFilter) url += `department_id=${departmentFilter}&`
     if (resultFilter) url += `result=${resultFilter}&`
 
@@ -42,7 +43,7 @@ function Results() {
   }
 
   async function handleReview(audit_id: number) {
-    await fetch(`http://localhost:8080/audits/${audit_id}/review`, {
+    await fetch(`${API_URL}/audits/${audit_id}/review`, {
       method: 'PUT',
       headers: { 'Authorization': `Bearer ${getToken()}` }
     })
@@ -50,7 +51,7 @@ function Results() {
   }
 
   async function handleClose(audit_id: number) {
-    const response = await fetch(`http://localhost:8080/audits/${audit_id}/close`, {
+    const response = await fetch(`${API_URL}/audits/${audit_id}/close`, {
       method: 'PUT',
       headers: { 'Authorization': `Bearer ${getToken()}` }
     })

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getToken, getUser } from '../auth'
+import API_URL from '../api'
 
 interface Recommendation {
   recommendation_id: number
@@ -34,7 +35,7 @@ function Recommendations() {
   async function fetchRecommendations() {
     setLoading(true)
     try {
-      const response = await fetch('http://localhost:8080/recommendations', {
+      const response = await fetch(`${API_URL}/recommendations`, {
         headers: { 'Authorization': `Bearer ${getToken()}` }
       })
       const data = await response.json()
@@ -47,7 +48,7 @@ function Recommendations() {
   }
 
   async function fetchDepartments() {
-    const response = await fetch('http://localhost:8080/departments', {
+    const response = await fetch(`${API_URL}/departments`, {
       headers: { 'Authorization': `Bearer ${getToken()}` }
     })
     const data = await response.json()
@@ -62,7 +63,7 @@ function Recommendations() {
     setError('')
 
     try {
-      const response = await fetch('http://localhost:8080/recommendations', {
+      const response = await fetch(`${API_URL}/recommendations`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -92,7 +93,7 @@ function Recommendations() {
   }
 
   async function handleAddress(id: number, status: string) {
-    const response = await fetch(`http://localhost:8080/recommendations/${id}/address`, {
+    const response = await fetch(`${API_URL}/recommendations/${id}/address`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

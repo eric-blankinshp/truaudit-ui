@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getToken, getUser } from '../auth'
+import API_URL from '../api'
 
 interface Audit {
   audit_id: number
@@ -24,7 +25,7 @@ function Dashboard() {
 
   async function fetchAudits() {
     try {
-      const response = await fetch('http://localhost:8080/audits', {
+      const response = await fetch(`${API_URL}/audits`, {
         headers: { 'Authorization': `Bearer ${getToken()}` }
       })
       const data = await response.json()
@@ -46,7 +47,7 @@ function Dashboard() {
 
   async function handleSubmit(audit_id: number) {
     try {
-      const response = await fetch(`http://localhost:8080/audits/${audit_id}/submit`, {
+      const response = await fetch(`${API_URL}/audits/${audit_id}/submit`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${getToken()}` }
       })

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getToken } from '../auth'
+import API_URL from '../api'
 
 interface Department {
   department_id: number
@@ -19,7 +20,7 @@ function LogAudit() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch('http://localhost:8080/departments', {
+    fetch(`${API_URL}/departments`, {
       headers: { 'Authorization': `Bearer ${getToken()}` }
     })
       .then(res => res.json())
@@ -35,7 +36,7 @@ function LogAudit() {
     setError('')
 
     try {
-      const response = await fetch('http://localhost:8080/audits', {
+      const response = await fetch(`${API_URL}/audits`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
